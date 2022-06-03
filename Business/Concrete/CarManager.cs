@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace Business.Concrete
                 Console.WriteLine("Yanlış yada Eksik ifade girdiniz.");
             }
         }
-        public List<Car> GetCarsByBrandId(int id)
+        public List<Car> GetCarDetails(int id)
         {
             return _carDal.GetAll(p => p.BrandId == id);
         }
@@ -43,5 +44,9 @@ namespace Business.Concrete
             return _carDal.GetAll(p => p.CarId == id);
         }
 
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
+        }
     }
 }

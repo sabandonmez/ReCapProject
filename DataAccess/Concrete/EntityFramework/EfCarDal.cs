@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,56 +12,28 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, ReCapDBContext>, ICarDal // ICarDal olma sebebi oraya DTOs leri yazacağız.
     {
-        public void Add(Car entity)
-        {
-            //usinge gelen  nesneler using bitince bellekten atılır çünkü context nesnesi biraz maliyetli
-            //Direkt NorthwindContext contex=new NorthwindContext() yazsaakta olur ama using daha tasarruflu bir yapı sunuyor
-
-            //Bu Usinge IDısposable pattern implementation of c# denir. Bellek hızlıca temizlenir.
-            using (ReCapDBContext context = new ReCapDBContext())
-            {
-                var addedEntity=context.Entry(entity);// Veri kaynağıyla entity 'i ilişkilendirir.
-                addedEntity.State = EntityState.Added; // Eklenecek nesne olduğunu söyledik
-                context.SaveChanges();// Ekle.İşlemleri yürürlüğe sokar.
-            }
-        }
-
-        public void Delete(Car entity)
+        public List<CarDetailDto> GetCarDetails()
         {
             using (ReCapDBContext context = new ReCapDBContext())
             {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State=EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
+                var result = from c in context.Cars
+                             join b in context.Brands on c.BrandId equals b.BrandId
+                             join r in context.Colors on c.ColorId equals r.ColorId
+                             select new CarDetailDto
+                             {
+                                 BrandName=b.BrandName,
+                                 BrandModel=c.BrandModel,
+                                 ColorName=r.ColorName,
+                                 Description=c.Description,
+                                 DailyPrice=c.DailyPrice,
+                             };
 
-        public Car Get(Expression<Func<Car, bool>> filter)
-        {
-            using (ReCapDBContext context = new ReCapDBContext())
-            {
-                return context.Set<Car>().SingleOrDefault(filter);
-            }
-        }
+                return result.ToList();
 
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            using (ReCapDBContext context =new ReCapDBContext())
-            {
-                return filter == null ? context.Set<Car>().ToList() : context.Set<Car>().Where(filter).ToList();
             }
-        }
-
-        public void Update(Car entity)
-        {
-            using (ReCapDBContext context = new ReCapDBContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
+            
         }
     }
 }
