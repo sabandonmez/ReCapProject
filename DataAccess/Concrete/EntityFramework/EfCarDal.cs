@@ -14,7 +14,9 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, ReCapDBContext>, ICarDal // ICarDal olma sebebi oraya DTOs leri yazacağız.
     {
-        public List<CarDetailDto> GetCarDetails()
+        
+
+        public List<CarDetailDto> GetCarDetailDto()
         {
             using (ReCapDBContext context = new ReCapDBContext())
             {

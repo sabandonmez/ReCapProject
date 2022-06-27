@@ -13,6 +13,6 @@ namespace DataAccess.Abstract
     {
         //DTO ların prop ları yazılır.
 
-        List<CarDetailDto> GetCarDetails();
+        List<CarDetailDto> GetCarDetailDto();
     }
 }

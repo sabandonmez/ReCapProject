@@ -16,41 +16,20 @@ namespace ConsoleUI
         {
 
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarDetails())
+            var result = carManager.GetAll();
+            if (result.Succes)
             {
-                Console.WriteLine(car.BrandName + " / " + car.BrandModel + " / " + car.ColorName + " / " + car.DailyPrice + " / " + car.Description);
-            }   
-
-
-
-        }
-
-        private static void GetCarsByBrandIdDeneme()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarDetails(1))
-            {
-                Console.WriteLine(car.BrandModel + " " + car.Description + " " + car.ModelYear + " " + car.DailyPrice + " " + car.ModelYear);
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.BrandModel);
+                }
             }
-        }
-
-        private static void GetCarsByColorIdDeneme()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarsByColorId(2))
+            else
             {
-                Console.WriteLine("ColorId: " + car.ColorId + " = " + car.BrandModel);
+                Console.WriteLine(result.Message);
             }
-        }
 
-        private static void AddDeneme()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Add(new Car { CarId = 7, BrandId = 1, ColorId = 4, BrandModel = "a", DailyPrice = 130000, ModelYear = "1995", Description = "Sedan" });
-            foreach (var car in carManager.GetCarsByCarId(7))
-            {
-                Console.WriteLine(car.BrandModel + " Eklendi");
-            }
+
         }
     }
 }
