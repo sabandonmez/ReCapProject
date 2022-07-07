@@ -25,9 +25,9 @@ namespace Business.Concrete
         {
             if (car.BrandModel.Length<2)
             {
-                return new SuccesResult(Message.CarIsNotAdded);
+                return new ErrorResult(Message.ItemNotAdded);
             }
-            return new SuccesResult(Message.CarAdded);
+            return new SuccesResult(Message.ItemAdded);
             _carDal.Add(car);
         }
         public IDataResult<List<Car>> GetCarDetails(int id)
@@ -53,9 +53,21 @@ namespace Business.Concrete
         {
             if (DateTime.Now.Hour==18)
             {
-                return new ErrorDataResult<List<Car>>(Message.CarsNotListed);
+                return new ErrorDataResult<List<Car>>(Message.ItemNotListed);
             }
-            return new SuccesDataResult<List<Car>>(_carDal.GetAll(),Message.CarsListed);
+            return new SuccesDataResult<List<Car>>(_carDal.GetAll(),Message.ItemListed);
+        }
+
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new SuccesResult(Message.ItemDeleted);
+        }
+
+        public IResult Update(Car car)
+        {
+            _carDal.Update(car);
+            return new SuccesResult(Message.ItemUpdated);
         }
     }
 }
