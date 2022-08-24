@@ -25,7 +25,7 @@ namespace Business.Concrete
             if (rental.ReturnDate!=null)
             {
                 _rentalDal.Add(rental);
-                return new SuccesResult(Message.ItemAdded);
+                return new SuccessResult(Message.ItemAdded);
             }
             else
                 return new ErrorResult(Message.ItemNotAdded);
@@ -37,7 +37,7 @@ namespace Business.Concrete
             if (rental.ReturnDate != null)
             {
                 _rentalDal.Delete(rental);
-                return new SuccesResult(Message.ItemDeleted);
+                return new SuccessResult(Message.ItemDeleted);
             }
             else
                 return new ErrorResult(Message.ItemNotDeleted);
@@ -45,13 +45,13 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccesDataResult<List<Rental>>(_rentalDal.GetAll(), Message.ItemListed);
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Message.ItemListed);
 
         }
 
         public IDataResult<List<Rental>> GetByRentalId(int id)
         {
-            return new SuccesDataResult<List<Rental>>(_rentalDal.GetAll(p=> p.RentalId==id));
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(p=> p.RentalId==id));
 
         }
 
@@ -60,7 +60,7 @@ namespace Business.Concrete
             if (rental.RentDate!=null)
             {
                 _rentalDal.Update(rental);
-                return new SuccesResult(Message.ItemUpdated);
+                return new SuccessResult(Message.ItemUpdated);
             }
             else
                 return new ErrorResult(Message.ItemNotUpdated);

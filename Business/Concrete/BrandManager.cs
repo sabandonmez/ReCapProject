@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constans.Messages;
+using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,36 +21,37 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand brand)
         {
             if (brand.BrandName.Length<2)
             {
                 return new ErrorResult(Message.ItemNotListed);
             }
-            return new SuccesResult(Message.ItemAdded);
+            return new SuccessResult(Message.ItemAdded);
             _brandDal.Add(brand);
         }
 
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
-            return new SuccesResult(Message.ItemDeleted);
+            return new SuccessResult(Message.ItemDeleted);
         }
 
         public IDataResult<List<Brand>> GetAll()
         {
-            return new SuccesDataResult<List<Brand>>(_brandDal.GetAll(), Message.ItemListed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Message.ItemListed);
         }
 
         public IDataResult<List<Brand>> GetByBrandId(int id)
         {
-            return new SuccesDataResult<List<Brand>>(_brandDal.GetAll(p=>p.BrandId == id), Message.ItemListed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(p=>p.BrandId == id), Message.ItemListed);
         }
 
         public IResult Update(Brand brand)
         {
             _brandDal.Delete(brand);
-            return new SuccesResult(Message.ItemUpdated);
+            return new SuccessResult(Message.ItemUpdated);
         }
     }
 }
